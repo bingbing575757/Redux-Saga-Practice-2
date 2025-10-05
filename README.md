@@ -1,6 +1,6 @@
 # DevExplorer – GitHub Profile & Repository Viewer
 
-A lReact application demonstrating a clean integration of React 19, Redux Toolkit (store configuration only), Redux-Saga for side‑effects, React Router v6, and Axios. Users can:
+A React application demonstrating a clean integration of React 19, Redux Toolkit (store configuration only), Redux-Saga for side‑effects, React Router v6, and Axios. Users can:
 
 - Search a GitHub username
 - View profile information
