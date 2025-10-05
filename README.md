@@ -1,185 +1,220 @@
-# Project: DevExplorer – GitHub Profile & Repo Viewer
+<div align="center">
 
-## 🕹️ Summary:
+# DevExplorer · GitHub Profile & Repo Viewer
 
-Create a single-page application (SPA) that allows users to search for a GitHub user and view:
+一个使用 React + Redux-Saga 构建的 GitHub 用户 / 仓库浏览器。输入用户名即可查看用户基本信息、仓库列表以及单个仓库详情。
 
-- Their basic profile
-- A paginated list of their repositories
-- Repository details
+English summary below ↓
 
-This will involve:
+</div>
 
-- Routing (`React Router`)
-- State management (`Redux`)
-- Side-effects/API calls (`Redux-Saga`)
-- Testing (`Jest`)
-- Optional: GraphQL version using GitHub's GraphQL API
+## ✨ 特性概览
 
-## 🧱 **Project Structure**
+- 按用户名搜索 GitHub 用户（示例：octocat）
+- 展示用户头像 / 名称 / Bio / 关注数
+- 拉取并展示仓库列表（名称 / star / 语言 / 描述）
+- 查看单个仓库详情（stars / forks / issues / language / license / topics / homepage）
+- 路由导航：主页搜索 → 用户页 → 仓库详情页
+- Redux-Saga 统一管理异步数据流
+- 模块化 services 抽离 API 调用（Axios）
+- 使用 Sass 编写全局样式
+- 预置 Jest + Testing Library（当前有占位测试，可扩展）
 
-Pages (Routing):
+## 🛠 技术栈
 
-- `/` → Search page
-- `/profile/:username` → User profile + repo list
-- `/profile/:username/repo/:reponame` → Repo detail
+| 分类 | 使用 | 说明 |
+| ---- | ---- | ---- |
+| View | React 19 | 函数组件 + Hooks |
+| Routing | React Router v6 | BrowserRouter + 动态参数 |
+| State | Redux Toolkit configureStore | 结合 sagaMiddleware，禁用 thunk |
+| Side Effects | redux-saga | takeLatest / call / put 组织异步流 |
+| HTTP | Axios | 简单封装 REST 请求 |
+| Style | Sass | `global.scss` 全局样式 |
+| Test | Jest + @testing-library/react | 组件 / saga / reducer 测试（待补充） |
+| Utils | redux-saga-test-plan | Saga 行为测试（待接入） |
 
-Redux State Example:
+## 🔄 数据流示意
 
-```jsx
+组件触发 → dispatch(FETCH_*) → saga 监听 → 调用 githubService → 成功/失败 action → reducer 写入 state → UI 响应。
+
+实际 Redux 状态结构：
+
+```js
 {
-  user: {
-    profile: {},
-    repos: [],
-    repoDetails: {},
+  user: {        // 用户信息
+    data: null | { ...GitHubUser },
+    error: null | string
   },
-  loading: false,
-  error: null
+  repos: {       // 仓库列表
+    list: [],
+    error: null | string
+  },
+  repoDetail: {  // 单个仓库详情
+    data: null | { ...GitHubRepo },
+    error: null | string
+  }
 }
-
 ```
 
-## 📡 API Details
+对应触发的核心 action types（未使用 action creator 简化写法）：
 
-### ✅ GitHub REST API
+```js
+FETCH_USER / SUCCESS / FAILURE
+FETCH_REPOS / SUCCESS / FAILURE
+FETCH_REPO_DETAIL / SUCCESS / FAILURE
+```
 
-- `https://api.github.com/users/{username}`
-- `https://api.github.com/users/{username}/repos`
-- `https://api.github.com/repos/{username}/{repo}`
+## 🧭 路由
 
-OR
+| Path | 页面 | 说明 |
+| ---- | ---- | ---- |
+| `/` | SearchPage | 搜索入口 + 示例展示 |
+| `/profile/:username` | ProfilePage | 用户信息 + 仓库列表 |
+| `/profile/:username/repo/:reponame` | RepoDetailPage | 仓库详情 |
 
-### 🧬 GitHub GraphQL (Optional Advanced Mode)
+## 📁 目录结构（真实项目）
 
-- Endpoint: `https://api.github.com/graphql`
-- You’ll need a personal access token, or mock it for offline development.
-- Documentation: [https://docs.github.com/en/graphql](https://docs.github.com/en/graphql)
-
-## 🧠Feature List
-
-### 1. Search GitHub User
-
-- Input a username
-- Navigate to `/profile/:username` on submit
-
-### 2. Display GitHub User Info
-
-- Name, avatar, followers, bio, etc.
-- Fetch with Redux-Saga and store in Redux
-
-### 3. Display Repository List
-
-- List repo names, stars, and languages
-- Paginated or infinite scroll
-
-### 4. View Repo Details
-
-- Click a repo to navigate to `/profile/:username/repo/:reponame`
-- Show full description, forks, issues, etc.
-
-## 🧪 **Testing (Jest)**
-
-Write unit tests for:
-
-- Components: SearchBar, ProfileCard, RepoList, RepoDetail
-- Reducers
-- Sagas (use `redux-saga-test-plan`)
-- Routing (basic coverage using  `react-testing-library`)
-
-## Reference for project structure:
-
-```php
+```bash
 src/
-├── components/
-│   ├── SearchBar.jsx
-│   ├── UserProfile.jsx
-│   ├── RepoList.jsx
-│   ├── RepoCard.jsx
-│   └── RepoDetail.jsx
-│
-├── route/                     # React Router pages
-│   ├── SearchPage.jsx         # Route: /
-│   ├── ProfilePage.jsx        # Route: /profile/:username
-│   └── RepoDetailPage.jsx     # Route: /profile/:username/repo/:reponame
-│
-├── services/                  # API calls to GitHub
-│   └── githubService.js       # Axios or fetch wrappers for GitHub REST/GraphQL
-│
-├── redux/
-│   ├── actions/
-│   │   ├── userActions.js
-│   │   ├── reposActions.js
-│   │   └── repoDetailActions.js
-│   │
-│   ├── creators/
-│   │   ├── userCreators.js
-│   │   ├── reposCreators.js
-│   │   └── repoDetailCreators.js
-│   │
-│   ├── reducers/
-│   │   ├── userReducer.js
-│   │   ├── reposReducer.js
-│   │   ├── repoDetailReducer.js
-│   │   └── rootReducer.js
-│   │
-│   ├── sagas/
-│   │   ├── userSaga.js
-│   │   ├── reposSaga.js
-│   │   ├── repoDetailSaga.js
-│   │   └── rootSaga.js
-│   │
-│   └── store.js
-│
-├── routes/                    # Route definitions and <BrowserRouter>
-│   └── AppRouter.jsx
-│
-├── hooks/                    
-│   └── useSearch.js           # Example hooks for use
-│                  
-│
-├── styles/                    
-│   └── global.scss
-│
-├── tests/
-│   ├── components/
-│   ├── route/
-│   ├── redux/
-│   │   ├── actions/
-│   │   ├── creators/
-│   │   ├── reducers/
-│   │   └── sagas/
-│   │       ├── userSaga.test.js
-│   │       └── reposSaga.test.js
-│
-├── App.jsx
-├── index.jsx
-└── setupTests.js
-
+  components/          # UI 组件 (RepoCard / RepoList / RepoDetail / UserProfile / SearchBar)
+  pages/               # 页面级组件 (SearchPage / ProfilePage / RepoDetailPage)
+  routes/              # 路由入口 (AppRouter.jsx)
+  redux/
+    actions/           # action type 常量
+    reducers/          # user / repos / repoDetail / rootReducer
+    sagas/             # userSaga / reposSaga / repoDetailSaga / rootSaga
+    store.js
+  services/            # githubService.js（REST API 调用）
+  hooks/               # useSearch 自定义 Hook
+  styles/              # global.scss
+  tests/               # （当前仅占位测试，待完善）
+  App.jsx
+  index.jsx
 ```
 
-## Reference for Design:
+> 说明：README 中早期设计的 creators/ 目录目前未实现；如需加强可添加 action creator 封装或使用 RTK createSlice。
 
-![image.png](https://github.com/user-attachments/assets/445020fb-a891-40d0-bc33-84ca4449deb2)
+## 🌐 GitHub API（REST）
 
-![image.png](https://github.com/user-attachments/assets/b3d45f64-b9cf-4af1-b4e6-931cd39ed2a6)
+使用的端点：
 
-![image.png](https://github.com/user-attachments/assets/a7300b21-a730-4c8c-a41a-beac9cf22828)
+| 功能 | Endpoint |
+| ---- | -------- |
+| 获取用户 | `GET /users/{username}` |
+| 获取仓库列表 | `GET /users/{username}/repos?per_page=50&sort=updated` |
+| 获取仓库详情 | `GET /repos/{owner}/{repo}` |
+
+⚠️ Rate Limit：未携带 Token 的匿名请求存在速率限制。若频繁调试可：
+
+1. 生成 GitHub Personal Access Token (classic / 只勾选 public_repo 即可)。
+2. 在本地创建 `.env`（CRA 需前缀 REACT_APP_）：
+   ```bash
+   REACT_APP_GITHUB_TOKEN=ghp_xxx
+   ```
+3. 在 `githubService.js` 中给 axios 添加：
+   ```js
+   axios.get(url, { headers: { Authorization: `token ${process.env.REACT_APP_GITHUB_TOKEN}` } })
+   ```
+（当前项目尚未内置此逻辑，按需添加。）
+
+## ▶️ 快速开始
+
+```bash
+git clone <repo_url>
+cd redux-saga-practice-2
+npm install
+npm start
+```
+
+然后打开 http://localhost:3000 并尝试输入：`octocat`
+
+## 🧪 测试
+
+当前 tests/ 下仅有占位测试：
+
+```js
+test('dummy test', () => { expect(true).toBe(true) })
+```
+
+推荐补充：
+
+1. Reducer 纯函数测试（给定 state + action 输出）
+2. Saga 流程（redux-saga-test-plan `expectSaga`）
+3. 组件渲染（ProfilePage：mock store 注入 user / repos）
+4. 路由跳转（MemoryRouter + fireEvent.submit）
+5. 错误分支（API 失败时 error 文案展示）
+
+运行：
+
+```bash
+npm test
+```
+
+## 🧱 关键文件速览
+
+| 文件 | 作用 |
+| ---- | ---- |
+| `src/redux/store.js` | 配置 Redux store + sagaMiddleware |
+| `src/redux/sagas/*.js` | 监听 FETCH_*，请求 GitHub API |
+| `src/services/githubService.js` | Axios 封装 GitHub REST 调用 |
+| `src/pages/*` | 页面级容器，负责数据调度 |
+| `src/components/*` | 纯展示组件（部分含少量交互） |
+| `src/hooks/useSearch.js` | 封装搜索输入 & 导航逻辑 |
+
+## 🚀 可迭代方向（Backlog）
+
+- [ ] 添加 Loading / Skeleton 组件
+- [ ] 添加分页 / infinite scroll（配合 `page` 参数）
+- [ ] 引入错误边界（Error Boundary）
+- [ ] 缓存最近访问的用户数据（localStorage / RTK Query）
+- [ ] 支持按语言过滤仓库
+- [ ] 添加 star / fork 排序切换
+- [ ] dark / light 主题切换（可用 MUI / CSS variables）
+- [ ] 引入 GitHub GraphQL 版本（合并 profile + repos 查询）
+- [ ] 增加 E2E 测试（Playwright / Cypress）
+
+## 🤝 贡献
+
+欢迎 fork 后提交 PR：
+
+1. 创建 feature 分支：`git checkout -b feat/xxx`
+2. 提交：`git commit -m "feat: 支持仓库语言过滤"`
+3. 推送并创建 PR。
+
+建议保持：
+
+- 代码注释与现有风格一致（中英文均可，清楚即可）
+- Saga / Reducer 命名语义化
+- 最小可验证增量提交
+
+## 🧾 License
+
+仅学习与练习用途（如需开源协议可补充 MIT）。
 
 ---
 
-## Available Scripts
+## 🇺🇸 English Summary
 
-In the project directory, you can run:
+DevExplorer is a small learning project built with React 19, Redux Toolkit + Redux-Saga, React Router v6 and Axios. It lets you search a GitHub username, view profile info, list repositories and open a repository detail page. State is split into `user`, `repos`, and `repoDetail` slices; sagas listen for plain action types (e.g. `FETCH_USER`) and call GitHub REST endpoints. Tests are placeholders and can be expanded (reducers, sagas, components, routing). Future ideas include pagination, caching, GraphQL, theming and better error + loading states.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 📌 脚本 (NPM Scripts)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+| 命令 | 作用 |
+| ---- | ---- |
+| `npm start` | 启动开发服务器 (http://localhost:3000) |
+| `npm test` | 进入测试 watch 模式 |
+| `npm run build` | 生产构建（输出到 build/） |
+| `npm run eject` | 暴露 CRA 配置（不可逆） |
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+如果你希望我继续帮你：
+
+1. 加入 Token 支持
+2. 实现分页 / 语言过滤
+3. 添加首批真实测试用例
+
+随时告诉我下一步要做什么 🙌
+
