@@ -1,0 +1,439 @@
+// 仓库卡片
+.repo-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 20px;
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.repo-card a {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2563eb;
+  text-decoration: none;
+  margin-bottom: 6px;
+}
+.repo-card p {
+  color: #555;
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+.repo-meta {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 0.98rem;
+  color: #666;
+}
+
+// 仓库详情
+.repo-detail {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  padding: 32px 24px;
+  max-width: 600px;
+  margin: 32px auto;
+}
+.repo-detail .repo-meta {
+  display: flex;
+  gap: 24px;
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+.repo-detail .repo-links a {
+  color: #2563eb;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+// 用户卡片
+.user-profile {
+  text-align: center;
+  margin: 30px auto;
+  padding: 32px 24px;
+  max-width: 400px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+.user-profile img {
+  border-radius: 50%;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.user-profile h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+.user-profile .github-link {
+  display: inline-block;
+  background: #2563eb;
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+  margin-top: 8px;
+}
+/* 全局基础设置 */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f9fafb;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* 标题统一 */
+h1, h2, h3, h4 {
+  margin: 10px 0;
+  font-weight: 600;
+  color: #111;
+  text-align: center;
+}
+
+/* 搜索框和按钮 */
+form {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+
+  input {
+    padding: 10px;
+    width: 280px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+
+    &:focus {
+      outline: none;
+      border-color: #2563eb; /* 蓝色高亮 */
+      box-shadow: 0 0 4px rgba(37, 99, 235, 0.3);
+    }
+  }
+
+  button {
+    margin-left: 10px;
+    padding: 10px 16px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+
+    &:hover {
+      background: #1d4ed8;
+    }
+
+    &:active {
+      background: #1e40af;
+    }
+  }
+}
+
+/* 用户卡片 */
+.user-profile {
+  text-align: center;
+  margin: 30px auto;
+  padding: 20px;
+  max-width: 400px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+
+  img {
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+
+  a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+/* 仓库列表 */
+.repo-list {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 0;
+
+  li {
+    list-style: none;
+    background: white;
+    border: 1px solid #eee;
+    padding: 15px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    transition: transform 0.1s ease-in-out;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    a {
+      font-weight: 600;
+      font-size: 16px;
+      color: #2563eb;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    p {
+      margin: 6px 0;
+      color: #555;
+      font-size: 14px;
+    }
+  }
+}
+
+/* Repo Detail 页面 */
+.repo-detail {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+
+  p {
+    margin: 8px 0;
+    font-size: 15px;
+  }
+
+  a {
+    color: #2563eb;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+/* 响应式 */
+@media (max-width: 640px) {
+  form {
+    flex-direction: column;
+    align-items: center;
+
+    input {
+      width: 90%;
+      margin-bottom: 10px;
+    }
+
+    button {
+      width: 90%;
+    }
+  }
+
+  .repo-list, .repo-detail {
+    width: 90%;
+  }
+  /* 单个仓库卡片 */
+.repo-card {
+  list-style: none;
+  background: white;
+  border: 1px solid #eee;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  a {
+    font-weight: 600;
+    font-size: 16px;
+    color: #2563eb;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  p {
+    margin: 6px 0;
+    color: #555;
+    font-size: 14px;
+  }
+}
+/* Repo Detail 卡片 */
+.repo-detail {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 25px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+
+  h2 {
+    margin-bottom: 10px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+  }
+
+  .repo-description {
+    margin-bottom: 20px;
+    color: #555;
+    font-size: 15px;
+  }
+
+  .repo-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+
+    span {
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 6px 10px;
+      border-radius: 6px;
+    }
+  }
+
+  .repo-links {
+    display: flex;
+    gap: 20px;
+
+    a {
+      font-size: 14px;
+      font-weight: 500;
+      color: #2563eb;
+      text-decoration: none;
+      padding: 8px 14px;
+      border: 1px solid #2563eb;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: #2563eb;
+        color: white;
+      }
+    }
+  }
+}
+
+}
+
+/* RepoDetail 整体容器 */
+.repo-detail {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 25px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* 顶部作者+仓库名 */
+.repo-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+
+  img {
+    border-radius: 50%;
+    margin-right: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  .repo-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #222;
+
+    span {
+      font-weight: 400;
+      color: #888;
+    }
+  }
+}
+
+/* 仓库描述 */
+.repo-description {
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+/* About 区块 */
+.repo-about {
+  background: #fafbfc;
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 18px;
+  border: 1px solid #eee;
+
+  .about-title {
+    font-weight: 600;
+    font-size: 1.08rem;
+    margin-bottom: 8px;
+  }
+
+  .about-text {
+    color: #444;
+    margin-bottom: 8px;
+  }
+
+  .about-topics {
+    margin-bottom: 8px;
+    color: #888;
+  }
+
+  .about-homepage a {
+    color: #2563eb;
+  }
+
+  .about-license {
+    margin-bottom: 8px;
+  }
+}
+
+/* 关键信息分组 */
+.repo-meta {
+  margin-bottom: 12px;
+  display: flex;
+  gap: 24px;
+  color: #666;
+  font-size: 1rem;
+}
+
+/* 底部 GitHub 链接 */
+.repo-links {
+  margin-top: 12px;
+
+  a {
+    color: #2563eb;
+    font-weight: 500;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
